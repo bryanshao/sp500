@@ -1,0 +1,25 @@
+###
+# sp500
+# 2017-04-11
+###
+
+extract:
+  - step: Download HTML page with tickers
+    action: http.DownloadFiles
+    fetch:
+      - "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+
+  - step: Extract tickers from HTML page
+    action: html.ReadRecords
+    record_selector: "table:nth-of-type(1) > tr"
+    extract:
+      - selector: "td:nth-of-type(1) > a"
+        property: text
+        ignore_missing: true
+
+  - step: Debugging
+    action: debug.LogValues
+
+  - step: Apply Codec
+    action: parsekit.ApplyCodec
+    codec: ticker

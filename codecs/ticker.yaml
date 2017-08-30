@@ -1,0 +1,57 @@
+
+name: ticker
+description: >
+  historical data for a specific ticker.
+
+dependencies:
+  "lib.urlgenerator": urlgenerator
+
+transform:
+  - step: Set Schema
+    action: schema.SetSchema
+    fields:
+      - name: TradeDate
+        type: date
+      - name: Open
+        type: string
+      - name: High
+        type: string
+      - name: Low
+        type: string
+      - name: Close
+        type: string
+      - name: Volume
+        type: integer
+
+  - step: Filter invalid tickers
+    action: filter.FilterRecords
+    ignore_empty_records: yes
+
+  - step: Fetch Ticker url data
+    action: urlgenerator.TickerURL
+
+  - step: Read CSV
+    action: CSV.ReadRecords
+
+  - step: Filter invalid tickers
+    action: filter.FilterRecords
+    filter_list:
+      - record_offset: 0
+        match:
+        - field_name: TradeDate
+          patterns:
+            - '^Date$'
+
+  - step: Parse date field
+    action: conversion.ParseDatetime
+    fields:
+      - field_name: TradeDate
+        date_only: yes
+        formats:
+          - "MM/DD/YYYY"
+          - "M/DD/YYYY"
+
+load:
+  - step: Output to CSV
+    action: load.OutputCSV
+    repository: .
