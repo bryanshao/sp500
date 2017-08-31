@@ -5,12 +5,12 @@
 
 extract:
   - step: Download HTML page with tickers
-    action: http.DownloadFiles
+    action: extract.source.http.DownloadFiles
     fetch:
       - "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
   - step: Extract tickers from HTML page
-    action: html.ReadRecords
+    action: extract.formats.html.ReadRecords
     record_selector: "table:nth-of-type(1) > tr"
     extract:
       - selector: "td:nth-of-type(1) > a"
