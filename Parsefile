@@ -4,6 +4,7 @@
 ###
 
 name: sp500
+db_boundary: concourse.demo
 description: "Describe the data being parsed by the sp500 parser"
 maintainers:
   - John Doe <name@domain.com>

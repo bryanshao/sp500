@@ -5,6 +5,8 @@ description: >
 
 dependencies:
   "lib.urlgenerator": urlgenerator
+  "lib.set_datapath": "dp"
+  "output_adapters.output_river": "output_river"
 
 transform:
   - step: Set Schema
@@ -50,8 +52,16 @@ transform:
         formats:
           - "MM/DD/YYYY"
           - "M/DD/YYYY"
+          - "M/D/YYYY"
 
 load:
-  - step: Output to CSV
-    action: load.OutputCSV
-    repository: .
+  - step: Set the datapath
+    action: load.SetTableName
+    table_name: concourse.demo.sp500
+
+  - step: Send to Assembly
+    action: load.OutputAbstract
+    trusted: yes
+    db_boundary: concourse.demo
+    repository: '{ context.repository }'
+    credentials: '{ context.credentials }'

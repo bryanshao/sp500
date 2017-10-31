@@ -17,9 +17,6 @@ extract:
         property: text
         ignore_missing: true
 
-  - step: Debugging
-    action: debug.LogValues
-
   - step: Apply Codec
     action: parsekit.ApplyCodec
     codec: ticker
