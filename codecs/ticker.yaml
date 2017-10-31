@@ -5,8 +5,6 @@ description: >
 
 dependencies:
   "lib.urlgenerator": urlgenerator
-  "lib.set_datapath": "dp"
-  "output_adapters.output_river": "output_river"
 
 transform:
   - step: Set Schema
